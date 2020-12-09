@@ -1,0 +1,6 @@
+{
+	"mongodb": "mongodb+srv://abstergo:shivam0701@users.ftsbt.mongodb.net/links?retryWrites=true&w=majority",
+	"email": "testingkeylogger171@gmail.com",
+	"pass": "Testing@123",
+	"baseUrl": "http://localhost:5000"
+}
