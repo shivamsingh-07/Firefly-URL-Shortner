@@ -1,6 +1,6 @@
 module.exports = {
-	MID: "AlliGb74356588426099",
-	PAYTM_MERCHANT_KEY: "oZ5aqoNQqvYR%saQ",
+	MID: "",
+	PAYTM_MERCHANT_KEY: "",
 	WEBSITE: "WEBSTAGING",
 	CHANNEL_ID: "WEB",
 	INDUSTRY_TYPE_ID: "Retail",
