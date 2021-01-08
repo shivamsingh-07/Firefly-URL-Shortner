@@ -14,7 +14,7 @@ let transporter = nodemailer.createTransport({
 
 module.exports = async (reciever) => {
 	const OTP = id.generate();
-	const hash = jwt.sign({ user: reciever }, OTP, { expiresIn: "1d" });
+	const hash = jwt.sign({ user: reciever }, OTP);
 
 	let mail = {
 		from: details.email,
@@ -30,7 +30,6 @@ module.exports = async (reciever) => {
 	});
 
 	await verification.save();
-
 	transporter.sendMail(mail, (err, info) => {
 		if (err) throw err;
 		return info;

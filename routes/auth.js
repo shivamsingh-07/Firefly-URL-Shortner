@@ -6,6 +6,41 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const mailer = require("../config/mail");
 
+// @route	POST /verify-auth
+router.post("/verify-token", (req, res) => {
+	const token = req.body.auth_token;
+	if (token)
+		try {
+			jwt.verify(token, "abstergogaming");
+			res.status(200).send("Authentication Successful");
+		} catch (error) {
+			res.status(401).send("Authentication Failed!!");
+		}
+});
+
+// @route	POST /user
+router.post("/user", async (req, res) => {
+	const user = await User.findOne({ _id: jwt.decode(req.body.auth).user });
+	res.status(200).send(user);
+});
+
+// @route   Login
+router.post("/login", async (req, res) => {
+	// Checking Account
+	const user = await User.findOne({ email: req.body.email });
+	if (!user) return res.status(401).json("Email or password is wrong.");
+
+	// Checking password
+	const validPass = await bcrypt.compare(req.body.password, user.password);
+	if (!validPass) return res.status(401).json("Invalid Password!");
+
+	if (!user.is_verified) return res.json("Please verify your email first!");
+
+	// Assigning JWT Token
+	const token = jwt.sign({ user: user._id }, "abstergogaming", { expiresIn: "1h" });
+	res.status(200).json({ token });
+});
+
 // @route   Register
 router.post("/register", async (req, res) => {
 	// Existing Email
@@ -29,25 +64,22 @@ router.post("/register", async (req, res) => {
 		res.status(200).send(newUser);
 		mailer(req.body.email);
 	} catch (error) {
-		res.status(400).send(err);
+		res.status(400).send(error);
 	}
 });
 
-// @route   Login
-router.post("/login", async (req, res) => {
-	// Checking Account
-	const user = await User.findOne({ email: req.body.email });
-	if (!user) return res.status(400).send("Email or password is wrong.");
-
-	// Checking password
-	const validPass = await bcrypt.compare(req.body.password, user.password);
-	if (!validPass) return res.status(400).send("Invalid Password!");
-
-	if (!user.is_verified) return res.send("Please verify your email first!");
-
-	// Assigning JWT Token
-	const token = jwt.sign({ user: user._id }, "abstergogaming");
-	res.header("auth-token", token).send(token);
+// @route	POST /resetpassword
+router.post("/resetpassword", async (req, res) => {
+	const { newPass, auth } = req.body;
+	await User.findOne({ _id: jwt.decode(auth).user }, async (err, details) => {
+		if (err) throw err;
+		// Hashing Password
+		const salt = await bcrypt.genSalt(10);
+		const pass = await bcrypt.hash(newPass, salt);
+		details.password = pass;
+		await details.save();
+	});
+	res.status(200).json("Password Changed!");
 });
 
 // @route   Verification

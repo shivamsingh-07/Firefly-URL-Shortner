@@ -1,17 +1,23 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import Landing from "./components/landing";
 import Dashboard from "./components/dashboard";
+import Link from "./components/link";
+import Login from "./components/auth";
+import Payment from "./components/payment";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import ProtectedRoute from "./ProtectedRoute";
 
 ReactDOM.render(
 	<BrowserRouter>
 		<Switch>
 			<Route path="/" exact component={App} />
-			<Route path="/home" component={Landing} />
-			<Route path="/dashboard" component={Dashboard} />
+			<Route path="/auth" component={Login} />
+			<ProtectedRoute path="/dashboard" component={Dashboard} />
+			<ProtectedRoute path="/createlink" component={Link} />
+			<ProtectedRoute path="/payment" component={Payment} />
+			<Route path="*" render={() => <h1>404 Page Not Found</h1>} />
 		</Switch>
 	</BrowserRouter>,
 	document.getElementById("root")

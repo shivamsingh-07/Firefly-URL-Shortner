@@ -1,13 +1,13 @@
 import React from "react";
 import { Container, Button, Menu, MenuItem } from "@material-ui/core";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import axios from "axios";
 
 class App extends React.Component {
 	state = {
 		anchorEl: null,
+		auth: false,
 	};
-
-	setAnchorEl = () => {};
 
 	handleClick = (event) => {
 		this.setState({ anchorEl: event.currentTarget });
@@ -17,44 +17,68 @@ class App extends React.Component {
 		this.setState({ anchorEl: null });
 	};
 
+	componentDidMount() {
+		// Verify Auth
+		if (document.cookie)
+			axios
+				.post("https://firefly-api.glitch.me/auth/verify-token", {
+					auth_token: document.cookie.slice(11),
+				})
+				.then((res) => {
+					if (res.status === 200) this.setState({ auth: true });
+				});
+	}
+
 	render() {
 		return (
 			<div>
 				<Container className="content">
 					<nav>
 						<span className="logo">FIREFLY</span>
-						<Button
-							variant="outlined"
-							color="default"
-							onClick={() => (window.location.href = "/dashboard")}
-						>
-							Login
-						</Button>
-						{/* <AccountCircleIcon
-							fontSize="large"
-							aria-controls="simple-menu"
-							aria-haspopup="true"
-							onClick={this.handleClick}
-							style={{ cursor: "pointer" }}
-						/>
-						<Menu
-							id="simple-menu"
-							anchorEl={this.state.anchorEl}
-							keepMounted
-							open={this.state.anchorEl}
-							onClose={this.handleClose}
-						>
-							<MenuItem onClick={this.handleClose}>Dashboard</MenuItem>
-							<MenuItem onClick={this.handleClose}>My Account</MenuItem>
-							<MenuItem onClick={this.handleClose}>Logout</MenuItem>
-						</Menu> */}
+						{this.state.auth ? (
+							<>
+								<AccountCircleIcon
+									fontSize="large"
+									aria-controls="simple-menu"
+									aria-haspopup="true"
+									onClick={this.handleClick}
+									style={{ cursor: "pointer" }}
+								/>
+								<Menu
+									id="simple-menu"
+									anchorEl={this.state.anchorEl}
+									keepMounted
+									open={Boolean(this.state.anchorEl)}
+									onClose={this.handleClose}
+								>
+									<MenuItem
+										onClick={() => {
+											window.location.href = "/dashboard";
+											this.handleClose();
+										}}
+									>
+										Dashboard
+									</MenuItem>
+									<MenuItem
+										onClick={() => {
+											document.cookie =
+												"auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+											window.location.href = "/";
+											this.handleClose();
+										}}
+									>
+										Logout
+									</MenuItem>
+								</Menu>
+							</>
+						) : (
+							<Button variant="outlined" color="default" href="/auth">
+								Login
+							</Button>
+						)}
 					</nav>
 					<h1>World's Best URL Shortner</h1>
-					<Button
-						variant="contained"
-						color="primary"
-						onClick={() => (window.location.href = "/home")}
-					>
+					<Button variant="contained" color="primary" href="/dashboard">
 						Get Started
 					</Button>
 				</Container>
@@ -99,38 +123,20 @@ class App extends React.Component {
 						<section className="card">
 							<span className="title">Free</span>
 							<ul className="detail">
-								<li>Can generate 5 links.</li>
-								<li>Links valid for only 1 hour.</li>
-								<li></li>
-								<li></li>
+								<li>Can generate 1 link.</li>
 							</ul>
-							<Button variant="outlined" color="primary">
-								Select
-							</Button>
 						</section>
 						<section className="card">
-							<span className="title">$1</span>
+							<span className="title">₹75</span>
+							<ul className="detail">
+								<li>Can generate 10 links.</li>
+							</ul>
+						</section>
+						<section className="card">
+							<span className="title">₹600</span>
 							<ul className="detail">
 								<li>Can generate 100 links.</li>
-								<li>Link will not expire.</li>
-								<li></li>
-								<li></li>
 							</ul>
-							<Button variant="outlined" color="primary">
-								Select
-							</Button>
-						</section>
-						<section className="card">
-							<span className="title">$8</span>
-							<ul className="detail">
-								<li>Can generate 1000 links.</li>
-								<li>Link will not expire.</li>
-								<li></li>
-								<li></li>
-							</ul>
-							<Button variant="outlined" color="primary">
-								Select
-							</Button>
 						</section>
 					</div>
 				</Container>

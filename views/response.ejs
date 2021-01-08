@@ -1,0 +1,207 @@
+<html>
+	<head>
+		<title>Merchant Check Out Page</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+			body {
+				background-color: #eceff1;
+				font-family: Helvetica;
+			}
+			table {
+				border-radius: 10px;
+				border-bottom-left-radius: 0px;
+				border-bottom-right-radius: 0px;
+				width: auto;
+				border-collapse: collapse;
+				background-color: white;
+			}
+
+			.th-header {
+				border-top-left-radius: 10px;
+				border-top-right-radius: 10px;
+				width: 100%;
+				background-color: #2c3e50;
+				color: white;
+				padding: 20px;
+				font-size: 24px;
+			}
+
+			.td-title {
+				font-size: 16px;
+				font-weight: 700;
+				color: #78909c;
+				padding: 12px 8px 12px 8px;
+				border-bottom: 1px solid #cfd8dc;
+			}
+
+			.td-content {
+				font-size: 18px;
+				padding: 12px 8px 12px 8px;
+				border-bottom: 1px solid #cfd8dc;
+				text-align: right;
+			}
+
+			.td-bottom {
+				width: 100%;
+				font-weight: 600;
+				color: #2c3e50;
+				text-align: center;
+				padding: 20px 0 5px 0;
+				font-size: 20px;
+			}
+			.hr {
+				border-top: 2px solid;
+				width: 50vw;
+				margin: 30px auto;
+			}
+			.content {
+				padding: 20px 0 50px 0;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				text-align: center;
+			}
+			nav {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+			}
+			.logo {
+				font-size: 32px;
+				font-family: sans-serif;
+				border: 2px solid;
+				letter-spacing: 5px;
+				padding: 5px 10px;
+			}
+
+			footer {
+				display: flex;
+				justify-content: space-evenly;
+				align-items: center;
+				height: 100px;
+				font-size: 24px;
+				text-align: center;
+			}
+
+			.display {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				text-align: center;
+			}
+
+			.clickable {
+				display: flex;
+				justify-content: space-evenly;
+				align-items: center;
+			}
+
+			button {
+				width: 100px;
+				background-color: #2c3e50;
+				padding: 5px 10px;
+				color: #fff;
+				border-radius: 10px;
+				border: 0;
+				margin: 0 25px;
+				cursor: pointer;
+				font-size: 16px;
+			}
+			button:focus {
+				outline-style: none;
+			}
+
+			/* Media Queries */
+			@media (max-width: 850px) {
+				footer {
+					height: 160px;
+					flex-direction: column;
+				}
+				table {
+					width: 80%;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="content">
+			<nav>
+				<span class="logo">FIREFLY</span>
+			</nav>
+		</div>
+
+		<div class="display">
+			<h3>Welcome <%= user %></h3>
+			<br />
+			<table>
+				<thead>
+					<tr>
+						<th class="th-header" colspan="2">PAYMENT RECEIPT</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="td-title">Order ID</td>
+						<td class="td-content"><%= responseData.ORDERID %></td>
+					</tr>
+					<tr>
+						<td class="td-title">Transaction ID</td>
+						<td class="td-content"><%= responseData.TXNID %></td>
+					</tr>
+					<tr>
+						<td class="td-title">Bank Transaction ID</td>
+						<td class="td-content"><%= responseData.BANKTXNID %></td>
+					</tr>
+					<tr>
+						<td class="td-title">Bank Name</td>
+						<td class="td-content"><%= responseData.BANKNAME %></td>
+					</tr>
+					<tr>
+						<td class="td-title">Transaction Date</td>
+						<td class="td-content"><%= responseData.TXNDATE %></td>
+					</tr>
+					<tr>
+						<td class="td-title">Payment Mode</td>
+						<td class="td-content"><%= responseData.PAYMENTMODE %></td>
+					</tr>
+					<tr>
+						<td class="td-title">Currency</td>
+						<td class="td-content"><%= responseData.CURRENCY %></td>
+					</tr>
+					<tr>
+						<td class="td-title">Transaction Amount</td>
+						<td class="td-content"><%= responseData.TXNAMOUNT %></td>
+					</tr>
+
+					<tr>
+						<td class="td-bottom" colspan="2">
+							<% if(responseData.STATUS === "TXN_SUCCESS") { %> Your payment was successful. <%
+							} else { %> Your payment was unsuccessful. <% } %>
+						</td>
+					</tr>
+					<tr>
+						<td class="td-bottom" colspan="2">Thank you!</td>
+					</tr>
+				</tbody>
+			</table>
+			<br /><br />
+			<div class="clickable">
+				<button onclick="window.print()">Print</button>
+				<button onclick="window.close()">Close</button>
+			</div>
+		</div>
+
+		<div class="hr"></div>
+
+		<footer>
+			<span class="logo">FIREFLY</span>
+			<span>Copyright &copy; 2020 | Designed By Shivam</span>
+		</footer>
+	</body>
+</html>

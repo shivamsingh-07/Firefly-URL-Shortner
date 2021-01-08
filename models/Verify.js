@@ -5,7 +5,7 @@ const verifySchema = new mongoose.Schema({
 	otp: String,
 	code: String,
 	date: { type: String, default: new Date() },
-	expire_at: { type: Date, default: Date.now, expires: 86400 },
+	// expire_at: { type: Date, default: Date.now, expires: 86400 },
 });
 
-module.exports = mongoose.model("verification", verifySchema);
+module.exports = mongoose.model("verifications", verifySchema);

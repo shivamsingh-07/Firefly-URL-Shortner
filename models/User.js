@@ -5,7 +5,7 @@ const UserSchema = new mongoose.Schema({
 	email: String,
 	password: String,
 	account_type: Number,
-	balance: { type: Number, default: 0 },
+	balance: { type: Number, default: 1 },
 	is_verified: { type: Boolean, default: false },
 	created_on: { type: String, default: new Date() },
 });
