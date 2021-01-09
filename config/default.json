@@ -1,8 +1,8 @@
 {
-	"mongodb": "mongodb+srv://abstergo:shivam0701@users.ftsbt.mongodb.net/links?retryWrites=true&w=majority",
-	"CLIENT_ID": "995814239185-dsqf7t3lujm2esr2cjjvvju0o6e3455t.apps.googleusercontent.com",
-	"CLIENT_SECRET": "7a_3kGDhhG1tq_rlYfAv-3nS",
+	"mongodb": "",
+	"CLIENT_ID": "",
+	"CLIENT_SECRET": "",
 	"REDIRECT_URI": "https://developers.google.com/oauthplayground",
-	"REFRESH_TOKEN": "1//04adcYBXqSo4LCgYIARAAGAQSNwF-L9IrJbDzScXTk3agzo3cihX4iy48udBKl5R3uIqzwEHFRF7lCQGmP8d8HRpMtLkNFSk1ezA",
+	"REFRESH_TOKEN": "",
 	"baseUrl": "http://localhost:5000"
 }
