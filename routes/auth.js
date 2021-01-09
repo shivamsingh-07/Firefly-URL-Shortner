@@ -34,7 +34,7 @@ router.post("/login", async (req, res) => {
 	const validPass = await bcrypt.compare(req.body.password, user.password);
 	if (!validPass) return res.status(401).json("Invalid Password!");
 
-	if (!user.is_verified) return res.json("Please verify your email first!");
+	if (!user.is_verified) return res.status(401).json("Please verify your email first!");
 
 	// Assigning JWT Token
 	const token = jwt.sign({ user: user._id }, "abstergogaming", { expiresIn: "1h" });
@@ -88,7 +88,7 @@ router.get("/verify/:hash", (req, res) => {
 
 	Verify.findOne({ code: id }, (err, data) => {
 		if (err) throw err;
-		if (!data) return res.end("URL already used.");
+		if (!data) return res.end("Link Expired!!");
 
 		jwt.verify(id, data.otp, (err, info) => {
 			if (err) return res.end("Error Occured: Invalid Token");
